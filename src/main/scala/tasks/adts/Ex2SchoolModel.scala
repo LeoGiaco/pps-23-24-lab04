@@ -76,5 +76,20 @@ object BaseSchoolModel extends SchoolModule:
     def nameOfCourse(course: Course): String = course match
       case CourseImpl(name) => name
     
-    def setTeacherToCourse(teacher: Teacher, course: Course): School = ???
-    def coursesOfATeacher(teacher: Teacher): Sequence[Course] = ???
+    def setTeacherToCourse(teacher: Teacher, course: Course): School = 
+      val mapTeachers: Teacher => Teacher = (t) => (t, teacher) match
+          case (TeacherImpl(n1, c), TeacherImpl(n2, _)) if n1 == n2 => TeacherImpl(n1, Cons(course, c))
+      school.match
+        case SchoolImpl(teachers, courses) if teachers != Sequence.Nil() && courses != Sequence.Nil() =>
+          SchoolImpl(Sequence.map(teachers: Sequence[TeacherImpl])(mapTeachers), courses)
+        case _ => school
+
+    def coursesOfATeacher(teacher: Teacher): Sequence[Course] = school match
+      def findTeacher(teacher: Teacher, teachers: Sequence[Teacher]): Sequence[Course] = (teacher, teachers) match
+        case (TeacherImpl(n1, _), Cons(TeacherImpl(n2, c), t)) if n1 == n2 => c
+      //   case (tc, Cons(_, t)) => 
+      // case SchoolImpl(teachers, courses) => (teacher, teachers) match
+      //   case (TeacherImpl(n1, _), Cons(TeacherImpl(n2, c), t)) if n1 == n2 => c
+      //   case (tc, Cons(_, t)) => 
+      
+    

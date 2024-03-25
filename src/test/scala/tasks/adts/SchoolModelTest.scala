@@ -5,8 +5,7 @@ import org.junit.Assert.*
 
 import SchoolModel.*
 import u03.Optionals.Optional
-import u03.EncapsulatedSequences.Sequence.map
-import u03.BTrees.Tree.count
+import u03.Sequences.*
 
 class SchoolModelTest {
     
@@ -28,5 +27,25 @@ class SchoolModelTest {
             case Optional.Just(c) => c
             case _ => ???
         assertEquals(course, school.nameOfCourse(courseObj))        
-        
+
+    def first[A](sequence: Sequence[A]): Optional[A] = sequence match
+        case Sequence.Cons(h, _) => Optional.Just(h)
+        case _ => Optional.Empty()
+
+
+    @Test def assignCourseToTeacherTest() = 
+        val teacher = "Mario"
+        val course = "Informatica"
+        val school = createSchool().addTeacher(teacher).addCourse(course)
+        val teacherObj: Teacher = school.teacherByName(teacher) match
+            case Optional.Just(t) => t
+            case _ => ???
+        val courseObj: Course = school.courseByName(course) match
+            case Optional.Just(c) => c
+            case _ => ???
+        val schoolWithTeacherAssigned = school.setTeacherToCourse(teacherObj, course = courseObj)
+        val firstCourseObj = first(schoolWithTeacherAssigned.coursesOfATeacher(teacherObj)) match
+            case Optional.Just(c) => c
+            case _ => ???
+        assertEquals(course, schoolWithTeacherAssigned.nameOfCourse(firstCourseObj))    
 }
