@@ -32,4 +32,11 @@ object Ex1ComplexNumbers:
         case ComplexImpl(_, im) => im
       def sum(other: Complex): Complex = ComplexImpl(complex.re() + other.re(), complex.im() + other.im())
       def subtract(other: Complex): Complex = ComplexImpl(complex.re() - other.re(), complex.im() - other.im())
-      def asString(): String = s"${"%.1f".formatted(complex.re())} ${if complex.im() < 0 then "-" else "+"} ${"%.1fi".formatted(complex.im())}"
+      def asString(): String = complex match
+        case ComplexImpl(re, 0) => "%.1f".formatted(re)
+        case ComplexImpl(0, im) => "%.1fi".formatted(im)
+        case ComplexImpl(re, im) => 
+            val sign = if complex.im() < 0 then "-" else "+"
+            "%.1f %s %.1fi".formatted(re, sign, Math.abs(im))
+
+            
