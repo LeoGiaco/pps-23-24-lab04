@@ -1,6 +1,7 @@
 package tasks.adts
 
 import u03.Sequences.*
+import Sequence.*
 import u03.Optionals.*
 
 /*  Exercise 3: 
@@ -22,9 +23,13 @@ object Ex3Stacks:
       def asSequence(): Sequence[A]
   
   object StackImpl extends StackADT:
-    type Stack[A] = Nothing
-    def empty[A]: Stack[A] = ???
+    type Stack[A] = Sequence[A]
+    def empty[A]: Stack[A] = Sequence.Nil()
+
     extension [A](stack: Stack[A])
-      def push(a: A): Stack[A] = ???
-      def pop(a: A): Optional[(A, Stack[A])] = ???
-      def asSequence(): Sequence[A] = ???
+      def push(a: A): Stack[A] = Cons(a, stack)
+      def pop(a: A): Optional[(A, Stack[A])] = stack match
+        case Cons(h, t) => Optional.Just(h, t)
+        case Nil() => Optional.Empty()
+      
+      def asSequence(): Sequence[A] = stack
