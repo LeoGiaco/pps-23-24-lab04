@@ -39,7 +39,7 @@ object Ex5Traversable:
     extension [A](el: Sequence[A])
       def consume(func: A => Unit): Unit = el match
         case Cons(h, t) => func(h); t.consume(func)
-        case Nil() => (9)
+        case Nil() => ()
     
   @main def tryTraversables =
     val seq1 = Cons("a", Cons("b", Cons("c", Cons("d", Nil()))))
