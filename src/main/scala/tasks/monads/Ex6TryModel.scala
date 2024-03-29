@@ -31,10 +31,11 @@ object Ex6TryModel:
       case TryImpl.Failure(_) => other
 
   given Monad[Try] with
-    override def unit[A](value: A): Try[A] = ???
+    override def unit[A](value: A): Try[A] = TryImpl.Success(value)
     extension [A](m: Try[A]) 
-
-      override def flatMap[B](f: A => Try[B]): Try[B] = ??? 
+      override def flatMap[B](f: A => Try[B]): Try[B] = m match
+        case TryImpl.Success(v) => f(v)
+        case TryImpl.Failure(exc) => TryImpl.Failure(exc)
       
 @main def main: Unit = 
   import Ex6TryModel.*
